@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevsProject.Application.Features.ProgrammingLanguages.Rules;
 using DevsProject.Application.Services.Repositories;
 using MediatR;
 using System;
@@ -13,16 +14,19 @@ namespace DevsProject.Application.Features.ProgrammingLanguages.Queries.GetByIdP
     {
         private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
         private readonly IMapper _mapper;
+        private readonly ProgrammingLanguageBusinessRules _businessRules;
 
-        public GetByIdProgrammingLanguageQueryHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper)
+        public GetByIdProgrammingLanguageQueryHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper, ProgrammingLanguageBusinessRules businessRules)
         {
             _programmingLanguageRepository = programmingLanguageRepository;
             _mapper = mapper;
+            _businessRules = businessRules;
         }
 
         public async Task<GetByIdProgrammingLanguageQueryResponse> Handle(GetByIdProgrammingLanguageQueryRequest request, CancellationToken cancellationToken)
         {
             var programmingLanguage = await _programmingLanguageRepository.GetAsync(p => p.Id == request.Id);
+            _businessRules.ProgrammingLanguageShouldExistWhenRequested(programmingLanguage);
             return _mapper.Map<GetByIdProgrammingLanguageQueryResponse>(programmingLanguage);
         }
     }

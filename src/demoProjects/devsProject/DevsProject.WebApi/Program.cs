@@ -1,3 +1,4 @@
+using Core.CrossCuttingConcerns.Exceptions;
 using DevsProject.Application;
 using DevsProject.Persistence;
 
@@ -24,6 +25,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+if (app.Environment.IsProduction())
+    app.ConfigureCustomExceptionMiddleware();
 
 app.UseHttpsRedirection();
 

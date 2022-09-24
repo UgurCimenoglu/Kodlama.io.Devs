@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevsProject.Application.Features.ProgrammingLanguages.Rules;
 using DevsProject.Application.Services.Repositories;
 using MediatR;
 using System;
@@ -13,15 +14,18 @@ namespace DevsProject.Application.Features.ProgrammingLanguages.Queries.GetListP
     {
         private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
         private readonly IMapper _mapper;
+        private readonly ProgrammingLanguageBusinessRules _businessRules;
 
-        public GetListProgrammingLanguageQueryHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper)
+        public GetListProgrammingLanguageQueryHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper, ProgrammingLanguageBusinessRules businessRules)
         {
             _programmingLanguageRepository = programmingLanguageRepository;
             _mapper = mapper;
+            _businessRules = businessRules;
         }
 
         public async Task<GetListProgrammingLanguageQueryResponse> Handle(GetListProgrammingLanguageQueryRequest request, CancellationToken cancellationToken)
         {
+
             var programmingLanguages = await _programmingLanguageRepository.GetListAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize);
             return _mapper.Map<GetListProgrammingLanguageQueryResponse>(programmingLanguages);
         }
