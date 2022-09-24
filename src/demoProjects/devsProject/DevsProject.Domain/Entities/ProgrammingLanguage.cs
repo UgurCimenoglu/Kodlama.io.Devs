@@ -9,6 +9,9 @@ namespace DevsProject.Domain.Entities
 {
     public class ProgrammingLanguage : Entity
     {
+        public string Name { get; set; }
+        public bool IsActive { get; set; }
+
         public ProgrammingLanguage()
         {
 
@@ -36,7 +39,6 @@ namespace DevsProject.Domain.Entities
 
         }
 
-        public string Name { get; set; }
-        public bool IsActive { get; set; }
+
     }
 }
